@@ -1,0 +1,352 @@
+<div class="card px-2 shadow-sm property-window overflow-auto rounded-0 border-top-0 vh-100">
+  <div class="card-body">
+    <h6 class="mb-0 d-flex justify-content-between">
+      <span class="my-auto">Property</span>
+      <i class="fas cursor-pointer fa-times my-auto text--size-20 text-secondary"
+         (click)="emitDataToParent(false, false)"></i>
+    </h6>
+    <small class="text-muted d-block">
+      Configure additional properties of the node
+    </small>
+
+    <!--tabs switch-->
+    <div class="tabs mt-3">
+      <input type="radio" id="radio-3" name="property-tabs"
+             (change)="currentTab !== 'basic' && setCurrentTab('basic')"
+             [checked]="currentTab === 'basic'" />
+      <label class="tab" [ngClass]="currentTab === 'basic' ? '' : 'cursor-pointer'" for="radio-3">Basic Details</label>
+      <!--<input type="radio" id="radio-4" name="property-tabs"-->
+      <!--(change)="setCurrentTab('configuration')" [disabled]="!nodeDetails.basic.id"-->
+      <!--[checked]="currentTab === 'configurations'"/>-->
+      <!--<label class="tab ml-2" for="radio-4" [ngClass]="!nodeDetails.basic.id ? 'text-grey' : 'cursor-pointer'">-->
+      <!--Configuration-->
+      <!--</label>-->
+      <input type="radio" id="radio-4" name="property-tabs"
+             (change)="currentTab !== 'connection' && setCurrentTab('connection')" [disabled]="!nodeDetails.basic.id"
+             [checked]="currentTab === 'connection'"/>
+      <label class="tab mx-2" [ngClass]="!nodeDetails.basic.id ? 'text-grey' :
+        currentTab === 'connection' ? '' : 'cursor-pointer'" for="radio-4">
+        Connections
+      </label>
+      <span class="glider custom"></span>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-md-12 pb-4">
+
+        <!--basic details tab-->
+        <ng-container *ngIf="currentTab === 'basic'">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <small class="text-secondary d-block mb-1">
+                  Select Tool Type <span class="text-danger font-weight-bolder">*</span>
+                </small>
+                <select class="form-control cursor-pointer" [(ngModel)]="nodeDetails.basic.nodeType">
+                  <option value="">Select Type</option>
+                  <option value="Lightning">Lightning</option>
+                  <option value="Semantic Segmentation">Semantic Segmentation</option>
+                  <option value="NLP">NLP</option>
+                  <option value="Point Cloud">Point Cloud</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <small class="text-secondary d-block mb-1">
+                  No. of Judgements <span class="text-danger font-weight-bolder">*</span>
+                </small>
+                <select class="form-control cursor-pointer" [(ngModel)]="nodeDetails.basic.judgementCount">
+                  <option [ngValue]="''" selected>Select Number</option>
+                  <option [ngValue]="1">1</option>
+                  <option [ngValue]="2">2</option>
+                  <option [ngValue]="3">3</option>
+                  <option [ngValue]="4">4</option>
+                  <option [ngValue]="5">5</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <small class="text-secondary d-block mb-1">
+                  Place URI <span class="text-danger font-weight-bolder">*</span>
+                </small>
+                <textarea class="form-control" [(ngModel)]="nodeDetails.basic.placeURI" placeholder="Place URI"></textarea>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <small class="text-secondary d-block mb-1">
+                  Name <span class="text-danger font-weight-bolder">*</span>
+                </small>
+                <input type="text" class="form-control" [(ngModel)]="nodeDetails.basic.label" placeholder="Enter Node Name">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <small class="text-secondary d-block mb-1">
+                  Minute Duration <span class="text-danger font-weight-bolder">*</span>
+                </small>
+                <input type="number" class="form-control" [(ngModel)]="nodeDetails.basic.minuteDuration"
+                       placeholder="Enter Minute">
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end mt-2">
+            <button class="btn btn-outline-danger mx-2 py-2 my-auto font-weight-bold"
+                    *ngIf="nodeDetails.basic.id">
+              <i class="fas fa-trash-alt mr-1"></i> Delete Node
+            </button>
+            <button class="btn btn-success py-2 my-auto font-weight-bold"
+                    (click)="saveNodeDetails()">
+              {{nodeDetails.basic.id ? 'Update' : 'Save'}} Changes
+            </button>
+          </div>
+        </ng-container>
+
+        <!--connections tab-->
+        <ng-container *ngIf="currentTab === 'connection'">
+
+          <!--toggle add instance - ON-->
+          <ng-container *ngIf="toggleAddInstance">
+            <div class="card">
+              <div class="card-header bg-primary-light">
+                <b>1. Target Node Selection</b>
+              </div>
+              <div class="card-body py-3">
+                <div class="form-group mb-0">
+                  <small class="text-secondary d-block mb-1">
+                    Nodes <span class="text-danger font-weight-bolder">*</span>
+                  </small>
+                  <select class="custom-select cursor-pointer shadow-sm"
+                          (change)="filterConverterLinks()"
+                          [(ngModel)]="nodeDetails.configuration.instance.meta.target">
+                    <option selected [ngValue]="''">Select Node</option>
+                    <option [ngValue]="node" *ngFor="let node of nodeDetails.configuration.listNodes">
+                      {{node.label}} ({{node.nodeType}})
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="card my-3">
+              <div class="card-header bg-primary-light">
+                <b>2. Type Converter Module</b>
+              </div>
+              <div class="card-body">
+                <ng-container *ngIf="!nodeDetails.configuration.instance.meta.target">
+                  <div class="d-flex justify-content-center">
+                    <i class="fas fa-info-circle text-warning my-auto mr-2 text--size-22"></i>
+                    <h6 class="my-auto text-muted font-weight-light">
+                      Select Target Node to view and select from available converters.
+                    </h6>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="nodeDetails.configuration.instance.meta.target">
+                  <ng-container *ngIf="nodeDetails.configuration.converterLinks.length">
+                    <div class="form-group mb-0">
+                      <small class="text-secondary d-block mb-1">
+                        Select Converter <span class="text-danger font-weight-bolder">*</span>
+                      </small>
+                      <select class="custom-select cursor-pointer shadow-sm"
+                              [(ngModel)]="nodeDetails.configuration.instance.meta.label">
+                        <option selected [ngValue]="''">Select Node</option>
+                        <option [ngValue]="item" *ngFor="let item of nodeDetails.configuration.converterLinks">
+                          {{item.converter.name}} ({{item.source}} -> {{item.target}})
+                        </option>
+                      </select>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="!nodeDetails.configuration.converterLinks.length">
+                    <div class="form-group">
+                      <small class="text-secondary d-block mb-1">
+                        Name
+                      </small>
+                      <input type="text" [(ngModel)]="nodeDetails.configuration.instance.meta.label" class="form-control"
+                             placeholder="Label">
+                    </div>
+                  </ng-container>
+                </ng-container>
+              </div>
+            </div>
+
+            <div class="card my-3">
+              <div class="card-header bg-primary-light">
+                <b class="d-inline-flex">
+                  3. Capability Attributes
+                  <span class="badge bg-theme-primary font-weight-bold ml-1 my-auto">
+                    Optional
+                  </span>
+                </b>
+              </div>
+              <div class="card-body py-2">
+                <ng-container *ngIf="!nodeDetails.configuration.attributeList.length">
+                  <div class="d-flex justify-content-center">
+                    <i class="fas fa-info-circle text-warning my-auto mr-2 text--size-22"></i>
+                    <h6 class="my-auto text-muted font-weight-light">
+                      Select Target Node to view and select from available capabilities.
+                    </h6>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="nodeDetails.configuration.instance.meta.target">
+                  <ng-container *ngIf="nodeDetails.configuration.attributeList.length">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item bg-transparent" *ngFor="let attribute of nodeDetails.configuration.attributeList">
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input"
+                                 (change)="setAttribute(attribute, $event)"
+                                 [checked]="attribute.selected" [id]="attribute.value">
+                          <label class="custom-control-label cursor-pointer font-weight-bold text-uppercase"
+                                 [htmlFor]="attribute.value">
+                            {{attribute.value}}
+                            <small class="d-block text-muted text--size-10">
+                              Some description of sample things goes here to understand what about this attribute.
+                            </small>
+                          </label>
+                        </div>
+                      </li>
+                    </ul>
+                  </ng-container>
+                </ng-container>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-end mt-3">
+              <button class="btn btn-outline-danger my-auto mx-2" type="button" (click)="toggleAddInstance = false">
+                Cancel
+              </button>
+              <button (click)="createInstance()" type="button" class="btn btn-success font-weight-bold my-auto">
+                {{nodeDetails.configuration.instance.edit ? 'Update' : 'Add'}} Connection
+              </button>
+            </div>
+          </ng-container>
+
+          <!-- toggle add instance - OFF-->
+          <ng-container *ngIf="!toggleAddInstance">
+
+            <!--relation to other nodes-->
+            <ng-container>
+              <a class="btn btn-link d-inline-flex px-0 text-dark text-decoration-none"
+                 (click)="relationCollapse.to = true; relationCollapse.from = !relationCollapse.from">
+                <i class="fas my-auto mr-2" [ngClass]="relationCollapse.from ? 'fa-caret-right': 'fa-caret-down'"></i>
+                <h6 class="my-auto font-weight-bold">To Other nodes</h6>
+              </a>
+              <div class="pb-2" [collapse]="relationCollapse.from" [isAnimated]="true">
+                <ul class="list-group list-group-flush border-left">
+                  <ng-container *ngIf="nodeDetails.connection.to.length">
+                    <li *ngFor="let item of nodeDetails.connection.to; let i = index"
+                        class="list-group-item d-flex py-0 justify-content-between border-0 position-relative">
+                      <span class="position-absolute border w-5 left-0" style="top: 32px"></span>
+                      <div class="my-auto">
+                        <div class="d-flex justify-content-start ml-3">
+                          <span class="my-auto py-1 px-2 bg-primary-light border rounded font-weight-bold border-primary mr-1">
+                            {{nodeDetails.basic.label}}
+                          </span>
+                          <span class="my-auto mx-3 px-1 text-center">
+                            <small *ngIf="item.label" style="top: 12px"
+                                   class="d-block text-theme-secondary text--size-15 position-relative">
+                              {{item.meta.label.converter ? item.meta.label.converter.name : item.meta.label}}
+                            </small>
+                            <img src="https://i.ibb.co/Qmz5T64/right-arrow.png" class="position-relative"
+                               alt="arrow" height="45" [ngStyle]="item.label && {'top': '-2px'}"/>
+                          </span>
+                          <span class="my-auto py-1 px-2 bg-theme-primary ml-1 font-weight-bold rounded">
+                            {{item.meta.target.label}}
+                          </span>
+                        </div>
+                      </div>
+                      <span class="my-auto d-inline-flex justify-content-end">
+                        <i class="fas fa-edit my-auto text-secondary cursor-pointer mx-3" (click)="editInstance(item)"></i>
+                        <ng-template #popTemplate>
+                          <span class="pr-3 text-dark font-weight-bolder">Are you sure?</span>
+                          <a (click)="deleteInstance(i,'to')" class="btn btn-danger btn-sm">Delete</a>
+                        </ng-template>
+                        <i class="fas fa-trash-alt my-auto text-danger cursor-pointer" placement="left"
+                           [outsideClick]="true" [popover]="popTemplate"></i>
+                      </span>
+                    </li>
+                  </ng-container>
+
+                  <ng-container *ngIf="!nodeDetails.connection.to.length">
+                    <li class="list-group-item text-center border-0 d-flex justify-content-start">
+                      <div class="my-auto">
+                        <img src="https://cdn-icons-png.flaticon.com/512/1043/1043281.png" alt="blank" width="32">
+                      </div>
+                      <div class="my-auto ml-1 text-left text-grey font-weight-bold">
+                        No Connections Added. Add at least two nodes to add new connection.
+                      </div>
+                    </li>
+                  </ng-container>
+
+                  <li *ngIf="nodeDetails.configuration.listNodes.length"
+                      class="list-group-item d-flex py-0 justify-content-between position-relative">
+                    <span class="position-absolute border w-5 left-0" style="top: 18px"></span>
+                    <button type="button" (click)="toggleAddInstance = true"
+                            class="btn btn-link text-theme-primary font-weight-bold d-inline-flex ml-1 text-decoration-none">
+                      <i class="fas fa-plus my-auto mr-1"></i> New Connection
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </ng-container>
+            <hr/>
+
+
+            <!--relation from other nodes-->
+            <ng-container>
+              <a class="btn btn-link d-inline-flex px-0 text-dark text-decoration-none"
+                 (click)="relationCollapse.from = true; relationCollapse.to = !relationCollapse.to">
+                <i class="fas my-auto mr-2" [ngClass]="relationCollapse.to ? 'fa-caret-right': 'fa-caret-down'"></i>
+                <h6 class="my-auto font-weight-bold">From Other Nodes</h6>
+              </a>
+              <div [collapse]="relationCollapse.to" [isAnimated]="true">
+                <ul class="list-group list-group-flush border-left">
+                  <ng-container *ngIf="nodeDetails.connection.from.length">
+                    <li *ngFor="let item of nodeDetails.connection.from; let i = index"
+                        class="list-group-item py-0 d-flex justify-content-between border-0 position-relative">
+                      <span class="position-absolute border w-5 left-0" style="top: 32px"></span>
+                      <div class="my-auto">
+                        <div class="d-flex justify-content-start ml-3">
+                          <span class="my-auto py-1 px-2 bg-theme-primary mr-1 font-weight-bold rounded">
+                            {{item.meta.source.label}}
+                          </span>
+                          <span class="my-auto mx-3 px-1 text-center">
+                            <small *ngIf="item.label" style="top: 12px"
+                                   class="d-block text-theme-secondary text--size-15 position-relative">
+                              {{item.label}}
+                            </small>
+                            <img src="https://i.ibb.co/Qmz5T64/right-arrow.png" class="position-relative"
+                                 alt="arrow" height="45" [ngStyle]="item.label && {'top': '-2px'}"/>
+                          </span>
+                          <span class="my-auto py-1 px-2 bg-primary-light border border-primary font-weight-bold ml-1 rounded">
+                            {{nodeDetails.basic.label}}
+                          </span>
+                        </div>
+                      </div>
+                      <span class="my-auto d-inline-flex justify-content-end">
+                        <ng-template #popTemplate>
+                          <span class="pr-3 text-dark font-weight-bolder">Are you sure?</span>
+                          <a (click)="deleteInstance(i,'from')" class="btn btn-danger btn-sm">Delete</a>
+                        </ng-template>
+                        <i class="fas fa-trash-alt my-auto text-danger cursor-pointer" placement="left"
+                           [outsideClick]="true" [popover]="popTemplate"></i>
+                      </span>
+                    </li>
+                  </ng-container>
+                  <ng-container *ngIf="!nodeDetails.connection.from.length">
+                    <li class="list-group-item text-muted">
+                      No connections linked to this node.
+                    </li>
+                  </ng-container>
+                </ul>
+              </div>
+            </ng-container>
+          </ng-container>
+
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

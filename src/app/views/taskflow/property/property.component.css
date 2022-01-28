@@ -1,0 +1,46 @@
+.property-window {
+  width: 580px;
+}
+.tabs {
+  display: flex;
+  position: relative;
+}
+.tabs * {
+  z-index: 2;
+}
+input[type=radio] {
+  display: none;
+}
+.tab {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0;
+  width: 95px;
+  transition: color 0.15s ease-in;
+}
+input[type=radio]:checked + label {
+  color: var(--primary-color-shade);
+  font-weight: 500;
+}
+input[id=radio-3]:checked ~ .glider {
+  transform: translateX(0);
+}
+input[id=radio-4]:checked ~ .glider{
+  transform: translateX(110%);
+}
+input[id=radio-5]:checked ~ .glider {
+  transform: translateX(220%);
+}
+.glider {
+  position: absolute;
+  top: 23px;
+  height: 5px;
+  width: 95px;
+  background-color: var(--primary-color-shade);
+  z-index: 1;
+  border-radius: 4px;
+  transition: 0.25s ease-out;
+}
+.glider.custom {
+  width: 95px;
+}

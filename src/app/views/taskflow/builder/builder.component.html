@@ -1,0 +1,122 @@
+<ng-sidebar-container class="min-vh-100 container-fluid px-0">
+  <div ng-sidebar-content>
+    <!--header-->
+    <app-header [nodeData]="hierarchialGraph.nodes" (emitAction)="emitAction($event)"></app-header>
+
+    <div class="row">
+      <!--block panel-->
+      <div class="col-md-3 px-0 block-panel">
+        <div [ngClass]="actionCommands.mode === 'viewer' ? 'sticky-top' : ''">
+          <app-block [selectedNodeDetails]="selectedNodeDetails" [actionCommands]="actionCommands"
+                     (nodeSelected)="nodeSelected($event)"></app-block>
+        </div>
+      </div>
+      <!--graph view-->
+      <div class="col-md-9 py-4" id="editor-panel"
+           [ngClass]="actionCommands.mode === 'viewer' ? 'bg-theme-secondary-dark' : ''">
+
+        <ng-container *ngIf="isLoading">
+          <div class="text-center absolute-center position-absolute">
+            <img src="https://i.ibb.co/KVKWbNJ/cloud-loader.gif" alt="loading" [width]="120"/>
+            <h5 class="font-weight-bold text-secondary mt-1">Loading Taskflow data..</h5>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="!isLoading">
+          <!--if no nodes-->
+          <ng-container *ngIf="!hierarchialGraph.nodes.length">
+            <div class="text-center py-5 my-5 position-relative">
+              <div class="d-inline-flex">
+                <img src="https://cdn-icons-png.flaticon.com/512/6529/6529259.png" alt="blank" width="100"/>
+              </div>
+              <h5 class="mt-1 font-weight-light w-100 mb-5 pb-5">
+                <p class="mb-1">Welcome to Custom Taskflow Builder. It's empty here.</p>
+                Select node from the left catalogue list or add a new node.
+              </h5>
+              <span class="d-none font-weight-bold position-absolute absolute-bottom">
+              Made with ❤️ for Typescript and D3 JS
+            </span>
+            </div>
+          </ng-container>
+
+          <!--if nodes available-->
+          <ng-container *ngIf="hierarchialGraph.nodes.length">
+            <!--mode viewer-->
+            <ng-container *ngIf="actionCommands.mode === 'viewer'">
+              <ngx-json-viewer [json]="hierarchialGraph"></ngx-json-viewer>
+            </ng-container>
+
+            <!--mode editor-->
+            <ng-container *ngIf="actionCommands.mode === 'builder'">
+              <div style="height: calc(100vh - 100px)">
+                <ngx-graph id="chart-container" [update$]="update$"
+                           [zoomToFit$]="zoomToFit$" [curve]="curve"
+                           [panningEnabled]="true" [draggingEnabled]="true"
+                           [enableZoom]="true" [autoZoom]="true" layout="dagreCluster"
+                           [autoCenter]="true" [animate]="true" [zoomLevel]="1.2"
+                           [links]="hierarchialGraph.links" [nodes]="hierarchialGraph.nodes">
+
+                  <!--defs-->
+                  <ng-template #defsTemplate>
+                    <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
+                      <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
+                    </svg:marker>
+                  </ng-template>
+                  <!--text-->
+                  <ng-template #nodeTemplate let-node>
+                    <svg:g (dblclick)="getDetails(node,$event)"
+                           class="node cursor-pointer"
+                           ngx-tooltip
+                           [tooltipPlacement]="'top'"
+                           [tooltipType]="'tooltip'"
+                           [tooltipTitle]="node.nodeType">
+                      <svg:rect
+                        [attr.width]="node.dimension.width"
+                        [attr.height]="node.dimension.height"
+                        [attr.fill]="node.background || node.data.color"
+                      />
+                      <svg:text class="font-weight-bold text-uppercase" alignment-baseline="central"
+                                [attr.x]="10" [attr.y]="node.dimension.height / 2">
+                        {{node.label}}
+                      </svg:text>
+                    </svg:g>
+                  </ng-template>
+                  <!--links-->
+                  <ng-template #linkTemplate let-link>
+                    <svg:g class="edge">
+                      <svg:path class="line activated" stroke-width="2" marker-end="url(#arrow)"></svg:path>
+                      <svg:text class="edge-label" text-anchor="middle">
+                        <textPath
+                          class="text-path"
+                          [attr.href]="'#' + link.id"
+                          [style.dominant-baseline]="link.dominantBaseline"
+                          startOffset="50%"
+                        >
+                          {{link.label}}
+                        </textPath>
+                      </svg:text>
+                    </svg:g>
+                  </ng-template>
+
+                </ngx-graph>
+              </div>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <ng-sidebar [opened]="selectedNodeDetails.toggleProperty"
+              [mode]="'over'"
+              [position]="'right'"
+              [closeOnClickBackdrop]="false"
+              [showBackdrop]="true"
+              [closeOnClickOutside]="false"
+              [keyClose]="false">
+    <!--fixed properties configuration panel-->
+    <ng-container *ngIf="selectedNodeDetails.toggleProperty">
+      <app-property [selectedNodeDetails]="selectedNodeDetails" [nodeTemplateList]="nodeTemplateList"
+                    (isToggle)="isToggle($event)"></app-property>
+    </ng-container>
+  </ng-sidebar>
+</ng-sidebar-container>

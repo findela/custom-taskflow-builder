@@ -1,0 +1,109 @@
+<div class="card rounded-0 overflow-auto border-0" style="height: calc(100vh - 110px)">
+  <div class="card-body py-3">
+    <h6 class="font-weight-bold mb-0">Blocks Panel</h6>
+    <small class="text-muted d-block">
+      Select node from the catalogue to build taskflow.
+    </small>
+
+    <div class="tabs my-3">
+      <input type="radio" id="radio-1" (change)="setCurrentTab('catalogues')"
+             name="block-tabs" [checked]="true" />
+      <label class="tab" for="radio-1">Catalogues</label>
+      <input type="radio" id="radio-2" (change)="setCurrentTab('activities')"
+             name="block-tabs" />
+      <label class="tab" for="radio-2">Activities</label>
+      <span class="glider"></span>
+    </div>
+
+    <ul class="list-group list-group-flush mt-1 pb-3">
+
+      <!--catalogues list-->
+      <ng-container *ngIf="currentTab === 'catalogues'">
+
+        <!--showing loader on load catalogue-->
+        <ng-container *ngIf="isLoading">
+          <li *ngFor="let item of [].constructor(4); let i = index"
+              class="list-group-item bg-transparent d-flex justify-content-start">
+            <div class="my-auto w-10 d-flex justify-content-start">
+            <span class="content-loader rounded-circle"
+                  style="height: 22px; width: 22px;"></span>
+            </div>
+            <div class="my-auto w-85 ml-2 d-flex justify-content-start">
+            <span class="content-loader w-15 my-auto"
+                  style="height: 32px"></span>
+              <div class="my-auto w-75 ml-3">
+              <span class="content-loader d-block w-65"
+                    style="height: 20px"></span>
+                <span class="content-loader d-block w-90 mt-2"
+                      style="height: 10px"></span>
+              </div>
+            </div>
+          </li>
+        </ng-container>
+
+        <!--if catalogue list is empty-->
+        <ng-container *ngIf="!isLoading && !nodeCatalogue.data.length">
+          <li class="list-group-item text-center">
+            <div class="d-inline-flex pt-3">
+              <img src="https://i.ibb.co/HCSx2x1/5832440.png"
+                   alt="blank" width="48">
+            </div>
+            <h6 class="mt-2 text-secondary">
+              No catalogue node listed yet.
+            </h6>
+          </li>
+        </ng-container>
+
+        <ng-container *ngIf="!isLoading && nodeCatalogue.data.length">
+          <ng-container *ngFor="let item of nodeCatalogue.data;">
+            <li (click)="selectNode(item)" [ngClass]="nodeCatalogue.selected.nodeId === item.nodeId ? 'active-item' : ''"
+                class="list-group-item d-flex justify-content-between rounded cursor-pointer catalogue-list-item">
+              <div class="my-auto d-flex justify-content-start">
+                <i class="fas mr-2 rounded-circle my-auto border"
+                   [ngClass]="nodeCatalogue.selected.nodeId === item.nodeId ?
+               'fa-check-circle text-theme-primary shadow-sm text--size-18' :
+               'fa-circle text-white border-secondary'"></i>
+                <!--<span class="py-1 text-center ml-1 mr-2 my-auto"-->
+                      <!--[ngStyle]="{'width': '33px','height': '33px','background':item.background}">-->
+                  <!--<small class="font-weight-bold text-uppercase">{{item.nodeId}}</small>-->
+                <!--</span>-->
+                <span class="my-auto pl-1 font-weight-bold">
+                  {{item.label}}
+                  <small class="d-block text-theme-secondary-lighter font-weight-bold">
+                    <b class="text-danger">{{item.nodeType}}</b>
+                  </small>
+                </span>
+              </div>
+            </li>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+
+      <!--if no activity-->
+      <ng-container *ngIf="currentTab === 'activities'">
+        <li class="list-group-item text-center">
+          <div class="d-inline-flex pt-3">
+            <img src="https://cdn-icons-png.flaticon.com/512/962/962759.png"
+                 alt="blank" width="48">
+          </div>
+          <h6 class="mt-2 text-secondary">
+            No activities recorded yet.
+          </h6>
+        </li>
+      </ng-container>
+
+    </ul>
+
+    <button [disabled]="isDisabled" type="button" (click)="triggerNode()"
+      class="d-inline block-cta-button shadow rounded rounded-0 py-2 text--size-18 left-0 bottom-0
+              justify-content-center btn-theme-primary btn position-fixed">
+      <ng-container *ngIf="!nodeCatalogue.selected">
+        <i class="fas fa-plus my-auto mr-2"></i>
+        <span class="my-auto font-weight-bold">Add New Node</span>
+      </ng-container>
+      <ng-container *ngIf="nodeCatalogue.selected">
+        <span class="my-auto font-weight-bold">Add Selected Node</span>
+      </ng-container>
+    </button>
+  </div>
+</div>

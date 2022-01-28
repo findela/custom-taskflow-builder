@@ -1,0 +1,49 @@
+<nav class="navbar navbar-light d-flex border-left-0 border-right-0 border-top-0 justify-content-between px-4"
+     style="height: 68px">
+  <div class="my-auto d-flex justify-content-start mr-5 pr-5">
+    <a class="btn btn-outline-dark btn-sm rounded-circle my-auto">
+      <i class="fas fa-arrow-left"></i>
+    </a>
+    <h6 class="my-auto mx-2">
+      Custom Taskflow 1.1
+      <small class="d-block">
+        Taskflow builder</small>
+    </h6>
+  </div>
+  <div class="btn-group my-auto">
+    <button (click)="toggleMode('builder')" type="button" class="rounded-0 btn btn-sm py-2 px-3 font-weight-bold"
+            [ngClass]="actionCommands.mode === 'builder' ? 'btn-theme-primary' : 'btn-outline-secondary'">
+      Flow Builder
+    </button>
+    <button [disabled]="viewerDisabled" type="button" (click)="toggleMode('viewer')"
+            class="btn btn-sm py-2 px-3 font-weight-bold rounded-0"
+            [ngClass]="viewerDisabled ? 'border text-theme-secondary-lighter' :
+            actionCommands.mode === 'viewer' ? 'btn-theme-primary' : 'btn-outline-dark'">
+      JSON Viewer
+    </button>
+  </div>
+  <div class="my-auto d-flex justify-content-end">
+    <button type="button" class="d-inline-flex btn border shadow-sm my-auto mx-3 px-3" [disabled]="actionCommands.mode === 'viewer'"
+            (click)="playBuilder()">
+      <i class="fas fa-play-circle text--size-18 my-auto text-success mr-1"></i>
+      <span class="my-auto text-dark">Click to play</span>
+    </button>
+    <div class="btn-group" dropdown>
+      <button type="button"
+              class="btn btn-theme-primary px-4 shadow-sm font-weight-bold shadow-sm">
+        Publish Flow
+      </button>
+      <button type="button" dropdownToggle
+              class="btn btn-theme-primary-dark dropdown-toggle dropdown-toggle-split">
+        <span class="caret"></span>
+      </button>
+      <ul *dropdownMenu class="dropdown-menu shadow border-0 high-z-index">
+        <li role="menuitem"><a class="dropdown-item" href="#">Clone Flow</a></li>
+        <li role="menuitem"><a class="dropdown-item" href="#">Discard Flow</a></li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem"><a class="dropdown-item text-danger font-weight-bold">Archive Flow</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

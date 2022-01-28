@@ -1,0 +1,68 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  font-weight: 400;
+  overflow: hidden;
+  font-size: 15px;
+  height: 100%;
+}
+
+/* File Upload */
+label.btn-file-upload:active {
+  background-color: var(--seconday-color-shade--light);
+}
+label.btn-file-upload input[type='file'] {
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  margin: -1px;
+  width: 1px;
+}
+
+.ngx-json-viewer .segment .segment-main .segment-key {
+  color: var(--warning-color-shade--lightest) !important;
+}
+
+.block-panel .card::-webkit-scrollbar {
+  width: 18px;
+}
+.block-panel .card::-webkit-scrollbar-track {
+  background-color: var(--grey-color-shade--lighter);
+  border-radius: 30px;
+}
+.block-panel .card::-webkit-scrollbar-thumb {
+  border-radius: 30px;
+  border: 5px solid transparent;
+  background-clip: content-box;
+  background-color: var(--seconday-color-shade--lighter);
+}
+
+.ng-sidebar__content {
+  position: relative !important;
+  overflow: initial !important;
+}
+
+/* style override*/
+.toastify {
+  padding: 18px;
+}
+.toastify.danger {
+  background: linear-gradient(135deg, #cc4a01, #e23839);
+}
+.toastify.success {
+  background: linear-gradient(135deg, #65b461, #4b9f47);
+}
+.toastify.warning {
+  background: linear-gradient(135deg, #f9a634, #f38232);
+}
+.toastify.info {
+  background: linear-gradient(135deg, #4e96fb, #1a71fb);
+}
+a.text-underline-none:hover {
+  text-decoration: none;
+}
+.popover {
+  box-shadow: 0 .25rem 0.5rem rgba(0,0,0,.15);
+  border: 1px solid var(--primary-color-shade--lighter);
+}

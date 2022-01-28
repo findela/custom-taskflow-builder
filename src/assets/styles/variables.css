@@ -1,0 +1,38 @@
+/* CSS custom properties overrides (variables) */
+:root {
+  --primary-color-shade: #0052CC;
+  --primary-color-shade--light: #257DFF;
+  --primary-color-shade--lighter: #7CAAEF;
+  --primary-color-shade--lightest: #edf3fd;
+  --primary-color-shade--dark: #00398e;
+
+  --seconday-color-shade: #2C2F3B;
+  --seconday-color-shade--light: #3D4D66;
+  --seconday-color-shade--lighter: #888888;
+  --seconday-color-shade--dark: #1f212a;
+
+  --black-color: #000000;
+  --white-color: #ffffff;
+  --off-white-color: #f7f7f7;
+
+  --success-color-shade: #28a745;
+  --success-color-shade--lightest: #f1f9f5;
+  --success-color-shade--dark: #1e7e34;
+
+  --info-color-shade: #86d4ee;
+  --info-color-shade--lighter: #c9ecf7;
+  --info-color-shade--lightest: #dff4fa;
+
+  --warning-color-shade: #ffd33e;
+  --warning-color-shade--lightest: #fdf7db;
+  --warning-color-shade--dark: #ae8600;
+
+  --danger-color-shade: #B92222;
+  --danger-color-shade-light: #f9e1e1;
+  --danger-color-shade--lightest: #fffbfb;
+
+  --grey-color-shade: #8c8c8c;
+  --grey-color-shade--light: #E4DFFF;
+  --grey-color-shade--lighter: #EDEDED;
+  --grey-color-shade--lightest: #F5F5F5;
+}
