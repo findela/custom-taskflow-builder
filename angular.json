@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "startsmart-customer": {
+    "angular-setup": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/startsmart-customer",
+            "outputPath": "dist/angular-setup",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -81,22 +81,22 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "startsmart-customer:build"
+            "browserTarget": "angular-setup:build"
           },
           "configurations": {
             "hmr": {
               "hmr": true,
-              "browserTarget": "startsmart-customer:build:hmr"
+              "browserTarget": "angular-setup:build:hmr"
             },
             "production": {
-              "browserTarget": "startsmart-customer:build:production"
+              "browserTarget": "angular-setup:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "startsmart-customer:build"
+            "browserTarget": "angular-setup:build"
           }
         },
         "test": {
@@ -134,15 +134,15 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "startsmart-customer:serve"
+            "devServerTarget": "angular-setup:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "startsmart-customer:serve:production"
+              "devServerTarget": "angular-setup:serve:production"
             }
           }
         }
       }
     }},
-  "defaultProject": "startsmart-customer"
+  "defaultProject": "angular-setup"
 }
