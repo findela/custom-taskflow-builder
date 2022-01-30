@@ -25,7 +25,6 @@
     "@swimlane/ngx-charts": "^20.0.1",
     "@swimlane/ngx-graph": "^7.2.0",
     "bootstrap": "^4.6.0",
-    "browserslist": "^4.19.1",
     "lodash": "^4.17.20",
     "ng-sidebar": "^9.4.3",
     "ngx-bootstrap": "^7.1.2",
