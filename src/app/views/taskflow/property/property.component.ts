@@ -72,7 +72,11 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
   };
 
   filterConverterLinks = () => {
-    this.nodeDetails.configuration = {...this.nodeDetails.configuration, attributeList: [], converterLinks: [] };
+    this.nodeDetails.configuration = {
+      ...this.nodeDetails.configuration,
+      attributeList: [],
+      converterLinks: []
+    };
     const filterAttributes =
       attributeList.filter((key) => key.type === this.nodeDetails.configuration.instance.meta.target.nodeType);
     if(filterAttributes.length && filterAttributes[0].attributes.length) {
@@ -210,11 +214,12 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
   };
 
   editInstance = (connection) => {
+    const instance = JSON.parse(JSON.stringify(connection));
     this.toggleAddInstance = true;
     this.nodeDetails.configuration.instance = {
       ...this.nodeDetails.configuration.instance,
-      ...connection,
-      meta: connection.meta,
+      ...instance,
+      meta: instance.meta,
       edit: true
     };
     this.nodeDetails.configuration.listNodes.forEach((key, index) => {

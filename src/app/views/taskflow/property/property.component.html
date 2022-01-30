@@ -283,7 +283,8 @@
                   <li *ngIf="nodeDetails.configuration.listNodes.length"
                       class="list-group-item d-flex py-0 justify-content-between position-relative">
                     <span class="position-absolute border w-5 left-0" style="top: 18px"></span>
-                    <button type="button" (click)="toggleAddInstance = true"
+                    <button type="button"
+                            (click)="resetInstance(); toggleAddInstance = true"
                             class="btn btn-link text-theme-primary font-weight-bold d-inline-flex ml-1 text-decoration-none">
                       <i class="fas fa-plus my-auto mr-1"></i> New Connection
                     </button>
