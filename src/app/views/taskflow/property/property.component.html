@@ -261,7 +261,7 @@
                         <i class="fas fa-edit my-auto text-secondary cursor-pointer mx-3" (click)="editInstance(item)"></i>
                         <ng-template #popTemplate>
                           <span class="pr-3 text-dark font-weight-bolder">Are you sure?</span>
-                          <a (click)="deleteInstance(i,'to')" class="btn btn-danger btn-sm">Delete</a>
+                          <a (click)="deleteInstance(i, 'to')" class="btn btn-danger btn-sm">Delete</a>
                         </ng-template>
                         <i class="fas fa-trash-alt my-auto text-danger cursor-pointer" placement="left"
                            [outsideClick]="true" [popover]="popTemplate"></i>
@@ -329,7 +329,7 @@
                       <span class="my-auto d-inline-flex justify-content-end">
                         <ng-template #popTemplate>
                           <span class="pr-3 text-dark font-weight-bolder">Are you sure?</span>
-                          <a (click)="deleteInstance(i,'from')" class="btn btn-danger btn-sm">Delete</a>
+                          <a (click)="deleteInstance(i, 'from')" class="btn btn-danger btn-sm">Delete</a>
                         </ng-template>
                         <i class="fas fa-trash-alt my-auto text-danger cursor-pointer" placement="left"
                            [outsideClick]="true" [popover]="popTemplate"></i>
