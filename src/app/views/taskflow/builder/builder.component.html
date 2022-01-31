@@ -43,7 +43,14 @@
           <ng-container *ngIf="hierarchialGraph.nodes.length">
             <!--mode viewer-->
             <ng-container *ngIf="actionCommands.mode === 'viewer'">
-              <ngx-json-viewer [json]="hierarchialGraph"></ngx-json-viewer>
+              <div class="position-relative">
+                <a (click)="getJSONData()" style="right: 25px; bottom: 25px"
+                   class="btn btn-success d-inline-flex position-fixed high-z-index">
+                  <i class="fas fa-download my-auto text--size-15"></i>
+                  <span class="my-auto ml-1">Download</span>
+                </a>
+                <ngx-json-viewer [json]="hierarchialGraph"></ngx-json-viewer>
+              </div>
             </ng-container>
 
             <!--mode editor-->
