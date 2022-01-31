@@ -110,19 +110,12 @@ export class BuilderComponent implements AfterViewInit,OnInit {
   getJSONData = () => {
     const sJson = JSON.stringify(this.hierarchialGraph);
     const date = new Date();
-    const dateStr =
-      ("00" + (date.getMonth() + 1)).slice(-2) + "-" +
-      ("00" + date.getDate()).slice(-2) + "-" +
-      date.getFullYear() + "-" +
-      ("00" + date.getHours()).slice(-2) + "-" +
-      ("00" + date.getMinutes()).slice(-2) + "-" +
-      ("00" + date.getSeconds()).slice(-2);
     const element = document.createElement('a');
     element.setAttribute(
       'href',
       "data:text/json;charset=UTF-8," + encodeURIComponent(sJson)
     );
-    element.setAttribute('download', dateStr+".json");
+    element.setAttribute('download', "taskflow-"+date.toISOString().substring(0,10)+".json");
     element.style.display = 'none';
     document.body.appendChild(element);
     element.click(); // simulate click

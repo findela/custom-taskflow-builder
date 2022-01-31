@@ -5,7 +5,7 @@
 
     <div class="row">
       <!--block panel-->
-      <div class="col-md-3 px-0 block-panel">
+      <div class="col-md-3 pr-0 block-panel">
         <div [ngClass]="actionCommands.mode === 'viewer' ? 'sticky-top' : ''">
           <app-block [selectedNodeDetails]="selectedNodeDetails" [actionCommands]="actionCommands"
                      (nodeSelected)="nodeSelected($event)"></app-block>
@@ -45,9 +45,11 @@
             <ng-container *ngIf="actionCommands.mode === 'viewer'">
               <div class="position-relative">
                 <a (click)="getJSONData()" style="right: 25px; bottom: 25px"
-                   class="btn btn-success d-inline-flex position-fixed high-z-index">
-                  <i class="fas fa-download my-auto text--size-15"></i>
-                  <span class="my-auto ml-1">Download</span>
+                   class="btn btn-outline-dark d-inline-flex position-fixed high-z-index">
+                  <i class="fas fa-download text-success my-auto"></i>
+                  <span class="my-auto text-white font-weight-bold ml-2">
+                    Download JSON
+                  </span>
                 </a>
                 <ngx-json-viewer [json]="hierarchialGraph"></ngx-json-viewer>
               </div>
