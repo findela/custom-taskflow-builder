@@ -68,6 +68,10 @@
   background-color: var(--seconday-color-shade--lighter);
   color: var(--seconday-color-shade);
 }
+.btn-theme-secondary-dark {
+  background-color: var(--seconday-color-shade--dark);
+  color: var(--white-color);
+}
 .btn-outline-theme-secondary {
   border: 1px solid var(--seconday-color-shade);
 }
