@@ -44,10 +44,11 @@
             <!--mode viewer-->
             <ng-container *ngIf="actionCommands.mode === 'viewer'">
               <div class="position-relative">
-                <a (click)="getJSONData()" style="right: 25px; bottom: 25px"
-                   class="btn btn-dark border-dark d-inline-flex position-fixed high-z-index">
-                  <i class="fas fa-download text-success my-auto"></i>
-                  <span class="my-auto text-white font-weight-bold ml-2">
+                <a (click)="getJSONData()" id="download-cta"
+                   style="bottom: 30px"
+                   class="btn btn-success d-inline-flex position-fixed high-z-index shadow-lg">
+                  <i class="fas fa-download my-auto"></i>
+                  <span class="my-auto font-weight-bold ml-2">
                     Download JSON
                   </span>
                 </a>
@@ -119,7 +120,7 @@
               [mode]="'slide'"
               [position]="'right'"
               [closeOnClickBackdrop]="false"
-              [showBackdrop]="false"
+              [showBackdrop]="true"
               [closeOnClickOutside]="false"
               [keyClose]="false">
     <!--fixed properties configuration panel-->

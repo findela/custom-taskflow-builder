@@ -15,6 +15,11 @@
   background-size: 30px;
   /*height: calc(100vh - 115px);*/
 }
+
+#download-cta {
+  right: 30px;
+}
+
 @media screen and (min-width: 1680px) {
   .container-fluid {
     width: 85%;
@@ -26,6 +31,9 @@
   #editor-panel {
     max-width: 78%;
     flex: 0 0 78%;
+  }
+  #download-cta {
+    right: 180px;
   }
 }
 
