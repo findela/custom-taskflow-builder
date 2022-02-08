@@ -10,7 +10,7 @@ import { Subject } from 'rxjs';
 })
 export class BuilderComponent implements AfterViewInit,OnInit {
 
-  hierarchialGraph = { nodes: [], links: [] };
+  hierarchialGraph = { nodes: [], links: [], converters:[] };
   actionCommands: any = {action: '', mode: 'builder'};
   curve = shape.curveNatural;
   selectedNodeDetails: any = {};
@@ -41,7 +41,7 @@ export class BuilderComponent implements AfterViewInit,OnInit {
   dummyTaskflowData = () => {
     this.isLoading = true;
     this.taskflow.dummyTaskflowData().then((response) => {
-      this.hierarchialGraph = response.result;
+      this.hierarchialGraph = {...this.hierarchialGraph, ...response.result};
       this.updateGraph();
       this.isLoading = false;
     });

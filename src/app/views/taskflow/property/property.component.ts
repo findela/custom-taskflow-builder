@@ -141,6 +141,9 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
           }
         })
       }
+
+      this.buildConverterTree();
+
       // this.nodeDetails.configuration.flowChartData.nodes = Object.assign([], this.nodeDetails.configuration.flowChartData.nodes);
       this.emitDataToParent(true, false);
     }
@@ -177,6 +180,9 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.prepareConnection();
+
+    this.buildConverterTree();
+
     this.toggleAddInstance = false;
     this.emitDataToParent(false, true);
     this.nodeDetails.configuration = {
@@ -188,6 +194,15 @@ export class PropertyComponent implements OnInit, OnChanges, OnDestroy {
       }
     }
   };
+
+  buildConverterTree = () => {
+    if (this.nodeDetails.configuration.flowChartData.links.length) {
+      this.nodeDetails.configuration.flowChartData.converters = [];
+      this.nodeDetails.configuration.flowChartData.links.forEach((key,index) => {
+        this.nodeDetails.configuration.flowChartData.converters.push(JSON.parse(JSON.stringify(key.meta.label)));
+      });
+    }
+  }
 
   prepareConnection = () => {
     this.nodeDetails.connection= {from: [], to: []};
