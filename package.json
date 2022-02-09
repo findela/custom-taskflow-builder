@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "dev": "ng serve --configuration=hmr --watch",
+    "dev": "ng serve --configuration=hmr --watch --port 4500",
     "build": "ng build --base-href ./index.html --configuration=production",
     "test": "ng test",
     "lint": "ng lint",

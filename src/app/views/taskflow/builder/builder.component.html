@@ -62,8 +62,8 @@
                 <ngx-graph id="chart-container" [update$]="update$"
                            [zoomToFit$]="zoomToFit$" [curve]="curve"
                            [panningEnabled]="true" [draggingEnabled]="false"
-                           [enableZoom]="true" [autoZoom]="true" layout="dagreCluster"
-                           [autoCenter]="true" [animate]="true" [zoomLevel]="1.2"
+                           [enableZoom]="false" [autoZoom]="false" layout="dagreCluster"
+                           [autoCenter]="true" [animate]="true" [zoomLevel]="1.5" [layoutSettings]="{orientation: 'TB'}"
                            [links]="hierarchialGraph.links" [nodes]="hierarchialGraph.nodes">
 
                   <!--defs-->
